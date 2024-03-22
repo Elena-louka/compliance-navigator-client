@@ -1,14 +1,18 @@
 import React from 'react';
 
+
 function QuestionCard({ question }) {
     return (
-        <div className="border border-gray-200 rounded-md p-4 m-2 flex flex-col">
-            <span className="text-sm text-gray-600">ID: {question._recordId}</span>
-            <h3 className="font-semibold">{question.Question}</h3>
-            <p>{question.Answer}</p>
-            <p className="text-gray-500 text-xs">{question.Detail}</p> {/* Assuming 'Detail' exists */}
+        <div className="bg-white shadow-md rounded-lg mb-4 p-4">
+          <div className="grid grid-cols-4 gap-4">
+            <div className="font-semibold text-gray-800">{question.Question}</div>
+            <div className="text-gray-600">{question.Answer.trim()}</div>
+            <div className="text-gray-500 text-sm">{question['Created At']}</div>
+            <div className="text-gray-500 text-sm">{question['Created By']}</div>
+          </div>
         </div>
     );
 }
-
-export default QuestionCard;
+  
+  export default QuestionCard;
+  
