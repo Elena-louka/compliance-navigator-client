@@ -1,13 +1,17 @@
+import React from 'react';
+import TopBar from './components/TopBar';
+import QuestionList from './components/QuestionList';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        Success
-      </header>
-    </div>
-  );
+
+    return (
+        <div className="App">
+            <TopBar />
+            <QuestionList />
+        </div>
+    );
 }
 
 export default App;
+
