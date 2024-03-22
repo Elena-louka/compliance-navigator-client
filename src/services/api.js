@@ -9,3 +9,15 @@ export const fetchQuestions = async () => {
     return [];
   }
 };
+
+export const searchQuestions = async (query) => {
+  try {
+    const response = await axios.get(`http://localhost:3000/api/questions/search`, {
+      params: { q: query }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error searching questions:', error);
+    return [];
+  }
+};
