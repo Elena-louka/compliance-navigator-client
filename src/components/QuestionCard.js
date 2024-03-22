@@ -1,14 +1,14 @@
 import React from 'react';
-import './QuestionCard.css'; 
 
-const QuestionCard = ({ question }) => {
+function QuestionCard({ question }) {
     return (
-      <div className="question-card">
-        <h3>{question.Question}</h3>
-        <p>{question.Answer}</p>
-        {/* Include other question details as necessary */}
-      </div>
+        <div className="border border-gray-200 rounded-md p-4 m-2 flex flex-col">
+            <span className="text-sm text-gray-600">ID: {question._recordId}</span>
+            <h3 className="font-semibold">{question.Question}</h3>
+            <p>{question.Answer}</p>
+            <p className="text-gray-500 text-xs">{question.Detail}</p> {/* Assuming 'Detail' exists */}
+        </div>
     );
-  };
+}
 
 export default QuestionCard;

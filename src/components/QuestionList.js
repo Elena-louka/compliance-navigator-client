@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchQuestions } from '../services/api';
 import QuestionCard from './QuestionCard'; 
-import './QuestionList.css';
 
 const QuestionList = () => {
     const [questions, setQuestions] = useState([]);

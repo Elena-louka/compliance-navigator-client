@@ -1,19 +1,10 @@
 import React from 'react';
-import './TopBar.css'; // Ensure you create this CSS file
 
 function TopBar() {
     return (
-        <header className="top-bar">
-            <div className="top-bar-container">
-                <div className="top-bar-title">CAIQ</div>
-                <nav className="top-bar-nav">
-                    {/* Add navigation items or status indicators here */}
-                    <span>Meta</span>
-                    <span>Manage</span>
-                    <span>Respond</span>
-                    {/* ... other navigation items */}
-                </nav>
-            </div>
+        <header className="bg-blue-800 text-white text-xl py-4 px-6 flex justify-between items-center">
+            <h1 className="font-bold">ComplianceNavigator</h1>
+            {/* Add navigation items if needed */}
         </header>
     );
 }
