@@ -31,3 +31,15 @@ export const createQuestion = async (questionData) => {
     throw error; 
   }
 };
+
+export const updateQuestion = async (id, questionData) => {
+  try {
+    console.log(id,questionData)
+    const response = await axios.put(`http://localhost:3000/api/questions/${id}`, questionData);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating question:', error);
+    throw error;
+  }
+};
+

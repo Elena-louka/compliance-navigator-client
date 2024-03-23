@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Modal = ({ isOpen, onClose, children }) => {
+const CreateQuestionModal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
   return (
@@ -12,7 +12,7 @@ const Modal = ({ isOpen, onClose, children }) => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        {/* Modal Content */}
+        {/* CreateQuestionModal Content */}
         <div className="p-4">
           {children}
         </div>
@@ -23,4 +23,4 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
-export default Modal;
+export default CreateQuestionModal;

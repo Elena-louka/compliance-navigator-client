@@ -29,15 +29,12 @@ const CreateQuestionForm = ({ onSubmit }) => {
     if (!validateEmail(email)) return;
 
     onSubmit({
-        "_recordId": "recMqPCsDQ4KVKJEL",
-        "Company Name": "Test Company Limited",
         Question: question,
         Answer: answer, 
         "Question Description": questionDescription,
         Properties: properties,
         "Created By": email,
         "Updated By": email,
-        "_companyId": 63297,
     });
 
     // Reset form fields after submission

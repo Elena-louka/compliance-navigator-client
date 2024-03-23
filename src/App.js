@@ -5,14 +5,35 @@ import CreateQuestionForm from './components/CreateQuestionForm';
 import QuestionsHeader from './components/QuestionsHeader';
 import QuestionList from './components/QuestionList';
 import SecondaryNavBar from './components/SecondaryNavBar';
-import Modal from './components/Modal';
-import { fetchQuestions, searchQuestions, createQuestion} from './services/api';
+import CreateQuestionModal from './components/CreateQuestionModal';
+import UpdateQuestionModal from './components/UpdateQuestionModal';
+import { fetchQuestions, searchQuestions, createQuestion, updateQuestion} from './services/api';
 import './App.css';
 
 function App() {
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(null);
+
+  const handleEditClick = (question) => {
+    setCurrentQuestion(question);
+    setIsUpdateModalOpen(true);
+  };
+  
+  const handleUpdateQuestion = async (id, updatedData) => {
+    try {
+      await updateQuestion(id, updatedData); 
+      const updatedQuestionsList = await fetchQuestions();
+      setQuestions(updatedQuestionsList);
+      setIsUpdateModalOpen(false);
+    } catch (error) {
+      console.error('Failed to update question:', error);
+    }
+  };
+  
 
   const handleSearch = async (query) => {
     setIsLoading(true);
@@ -58,9 +79,9 @@ function App() {
     <div className="App">
       <TopBar />
       <SecondaryNavBar onCreate={() => setIsModalOpen(true)} />
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <CreateQuestionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <CreateQuestionForm onSubmit={handleCreateQuestion} />
-      </Modal>
+      </CreateQuestionModal>
       <SearchBar onSearch={handleSearch} />
       <QuestionsHeader />
       {isLoading ? (
@@ -68,8 +89,14 @@ function App() {
           <div className="loader"></div>
         </div>
       ) : (
-        <QuestionList questions={questions} />
+        <QuestionList questions={questions} onEdit={handleEditClick}/>
       )}
+      <UpdateQuestionModal
+        isOpen={isUpdateModalOpen}
+        onClose={() => setIsUpdateModalOpen(false)}
+        question={currentQuestion}
+        onUpdate={handleUpdateQuestion}
+      />
     </div>
   );
 }
