@@ -21,3 +21,13 @@ export const searchQuestions = async (query) => {
     return [];
   }
 };
+
+export const createQuestion = async (questionData) => {
+  try {
+    const response = await axios.post(`http://localhost:3000/api/questions`, questionData);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating question:', error);
+    throw error; 
+  }
+};

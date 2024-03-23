@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import TopBar from './components/TopBar';
 import SearchBar from './components/SearchBar';
+import CreateQuestionForm from './components/CreateQuestionForm';
 import QuestionsHeader from './components/QuestionsHeader';
 import QuestionList from './components/QuestionList';
-import { fetchQuestions, searchQuestions } from './services/api';
+import SecondaryNavBar from './components/SecondaryNavBar';
+import Modal from './components/Modal';
+import { fetchQuestions, searchQuestions} from './services/api';
 import './App.css';
 
 function App() {
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSearch = async (query) => {
     setIsLoading(true);
@@ -37,10 +41,20 @@ function App() {
     loadQuestions();
   }, []);
 
+  const createQuestion = async (question) => {
+    // Here you would call the API to create a new question
+    console.log(question); // For now, just logging to the console
+    setIsModalOpen(false); // Close the modal after question creation
+  };
+
 
   return (
     <div className="App">
       <TopBar />
+      <SecondaryNavBar onCreate={() => setIsModalOpen(true)} />
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <CreateQuestionForm onSubmit={createQuestion} />
+      </Modal>
       <SearchBar onSearch={handleSearch} />
       <QuestionsHeader />
       {isLoading ? (
