@@ -6,7 +6,7 @@ import QuestionsHeader from './components/QuestionsHeader';
 import QuestionList from './components/QuestionList';
 import SecondaryNavBar from './components/SecondaryNavBar';
 import Modal from './components/Modal';
-import { fetchQuestions, searchQuestions} from './services/api';
+import { fetchQuestions, searchQuestions, createQuestion} from './services/api';
 import './App.css';
 
 function App() {
@@ -28,23 +28,29 @@ function App() {
 
   useEffect(() => {
     const loadQuestions = async () => {
-      setIsLoading(true); // Start loading
+      setIsLoading(true); 
       try {
         const data = await fetchQuestions();
         setQuestions(data);
       } catch (error) {
         console.error('Failed to load questions:', error);
       } finally {
-        setIsLoading(false); // Stop loading
+        setIsLoading(false);
       }
     };
     loadQuestions();
   }, []);
 
   const handleCreateQuestion = async (formData) => {
-    // API call to create a question
-    console.log(formData);
-    setIsModalOpen(false); // Optionally close the modal after form submission
+    try {
+      console.log(formData)
+      const newQuestion = await createQuestion(formData); 
+      setQuestions([newQuestion, ...questions]); 
+      setIsModalOpen(false);
+      console.log(newQuestion)
+    } catch (error) {
+      console.error('Failed to create question:', error);
+    }
   };
 
 

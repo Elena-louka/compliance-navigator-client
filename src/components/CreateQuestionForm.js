@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 const CreateQuestionForm = ({ onSubmit }) => {
-  // Form state initialization
   const [question, setQuestion] = useState('');
   const [answer, setAnswer] = useState('');
   const [properties, setProperties] = useState('');
@@ -23,24 +22,22 @@ const CreateQuestionForm = ({ onSubmit }) => {
     }
   };
 
-  // Form submission handler
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // Validate email before proceeding
     if (!validateEmail(email)) return;
 
-    const currentTime = new Date().toISOString();
     onSubmit({
-      Question: question,
-      "Question Description": questionDescription,
-      Properties: properties,
-      Answer: answer, 
-      "Created By": email,
-      "Updated By": email,
-      "Company Name": "Test Company",
-      "Created At": currentTime,
-      "Updated At": currentTime,
-      // _recordId and _companyId will be handled by the backend
+        "_recordId": "recMqPCsDQ4KVKJEL",
+        "Company Name": "Test Company Limited",
+        Question: question,
+        Answer: answer, 
+        "Question Description": questionDescription,
+        Properties: properties,
+        "Created By": email,
+        "Updated By": email,
+        "_companyId": 63297,
     });
 
     // Reset form fields after submission
