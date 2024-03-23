@@ -18,6 +18,60 @@ function App() {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(null);
 
+  const [selectedQuestions, setSelectedQuestions] = useState([]);
+
+  // function for toggling question selection
+  const handleSelectQuestion = (questionId) => {
+    setSelectedQuestions((prevSelected) =>
+      prevSelected.includes(questionId)
+        ? prevSelected.filter(id => id !== questionId)
+        : [...prevSelected, questionId]
+    );
+  };
+
+  // function for handling 'Select All' toggle
+  const handleSelectAll = () => {
+    if (selectedQuestions.length === questions.length) {
+      setSelectedQuestions([]);
+    } else {
+      setSelectedQuestions(questions.map(q => q.id));
+    }
+  };
+
+  // function for clearing the selection
+  const handleClearSelection = () => {
+    setSelectedQuestions([]);
+  };
+
+  // function for handling bulk assignment
+  const handleBulkAssign = () => {
+    const emailToAssign = window.prompt('Please enter the email address to assign the questions to:');
+    if (emailToAssign && emailToAssign.trim()) {
+      selectedQuestions.forEach(async (questionId, index, array) => {
+        try {
+          await updateQuestion(questionId, { 'Assigned To': emailToAssign });
+          if (index === array.length - 1) {
+            await refreshQuestions();
+            setSelectedQuestions([]); 
+          }
+        } catch (error) {
+          console.error(`Failed to assign question ${questionId}:`, error);
+        }
+      });
+    }
+  };
+
+  // Helper function to refresh questions from the server
+  const refreshQuestions = async () => {
+    try {
+      const updatedQuestionsList = await fetchQuestions();
+      setQuestions(updatedQuestionsList);
+    } catch (error) {
+      console.error('Failed to refresh questions:', error);
+    }
+  };
+
+
   const handleEditClick = (question) => {
     setCurrentQuestion(question);
     setIsUpdateModalOpen(true);
@@ -64,7 +118,6 @@ function App() {
 
   const handleCreateQuestion = async (formData) => {
     try {
-      console.log(formData)
       const newQuestion = await createQuestion(formData); 
       setQuestions([newQuestion, ...questions]); 
       setIsModalOpen(false);
@@ -83,13 +136,24 @@ function App() {
         <CreateQuestionForm onSubmit={handleCreateQuestion} />
       </CreateQuestionModal>
       <SearchBar onSearch={handleSearch} />
-      <QuestionsHeader />
+      <QuestionsHeader 
+        handleSelectAll={handleSelectAll}
+        areAllQuestionsSelected={selectedQuestions.length === questions.length}
+        handleClearSelection={handleClearSelection}
+        handleBulkAssign={handleBulkAssign}
+        selectedQuestionsCount={selectedQuestions.length}
+      />
       {isLoading ? (
         <div className="loader-container">
           <div className="loader"></div>
         </div>
       ) : (
-        <QuestionList questions={questions} onEdit={handleEditClick}/>
+        <QuestionList 
+          questions={questions}
+          onEdit={handleEditClick}
+          selectedQuestions={selectedQuestions}
+          onSelect={handleSelectQuestion}
+        />
       )}
       <UpdateQuestionModal
         isOpen={isUpdateModalOpen}
