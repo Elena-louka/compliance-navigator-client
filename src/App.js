@@ -41,10 +41,10 @@ function App() {
     loadQuestions();
   }, []);
 
-  const createQuestion = async (question) => {
-    // Here you would call the API to create a new question
-    console.log(question); // For now, just logging to the console
-    setIsModalOpen(false); // Close the modal after question creation
+  const handleCreateQuestion = async (formData) => {
+    // API call to create a question
+    console.log(formData);
+    setIsModalOpen(false); // Optionally close the modal after form submission
   };
 
 
@@ -53,7 +53,7 @@ function App() {
       <TopBar />
       <SecondaryNavBar onCreate={() => setIsModalOpen(true)} />
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <CreateQuestionForm onSubmit={createQuestion} />
+        <CreateQuestionForm onSubmit={handleCreateQuestion} />
       </Modal>
       <SearchBar onSearch={handleSearch} />
       <QuestionsHeader />
