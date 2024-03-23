@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import TopBar from './components/TopBar';
-import SearchBar from './components/SearchBar';
+import NavBar from './components/NavBar';
 import CreateQuestionForm from './components/CreateQuestionForm';
 import QuestionsHeader from './components/QuestionsHeader';
 import QuestionList from './components/QuestionList';
-import SecondaryNavBar from './components/SecondaryNavBar';
 import CreateQuestionModal from './components/CreateQuestionModal';
 import UpdateQuestionModal from './components/UpdateQuestionModal';
 import { fetchQuestions, searchQuestions, createQuestion, updateQuestion} from './services/api';
@@ -131,11 +130,13 @@ function App() {
   return (
     <div className="App">
       <TopBar />
-      <SecondaryNavBar onCreate={() => setIsModalOpen(true)} />
       <CreateQuestionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <CreateQuestionForm onSubmit={handleCreateQuestion} />
       </CreateQuestionModal>
-      <SearchBar onSearch={handleSearch} />
+      <NavBar 
+        onSearch={handleSearch} 
+        onClickCreate={() => setIsModalOpen(true)}
+      />
       <QuestionsHeader 
         handleSelectAll={handleSelectAll}
         areAllQuestionsSelected={selectedQuestions.length === questions.length}
