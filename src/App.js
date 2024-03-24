@@ -6,6 +6,7 @@ import QuestionsHeader from './components/QuestionsHeader';
 import QuestionList from './components/QuestionList';
 import CreateQuestionModal from './components/CreateQuestionModal';
 import UpdateQuestionModal from './components/UpdateQuestionModal';
+import FilterModal from './components/FilterModal';
 import { fetchQuestions, searchQuestions, createQuestion, updateQuestion} from './services/api';
 import './App.css';
 
@@ -13,11 +14,17 @@ function App() {
   const [questions, setQuestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(null);
-
   const [selectedQuestions, setSelectedQuestions] = useState([]);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+
+  // Function to handle the application of filters
+  const handleApplyFilter = (assignedTo, properties) => {
+    setIsFilterModalOpen(false);
+    const filters = { assignedTo, properties };
+    refreshQuestions(filters);
+  };
 
   // function for toggling question selection
   const handleSelectQuestion = (questionId) => {
@@ -60,14 +67,39 @@ function App() {
     }
   };
 
-  // Helper function to refresh questions from the server
-  const refreshQuestions = async () => {
+  // Helper function to normalize property strings
+  const normalizeProperties = (propertiesString) => {
+    return propertiesString.split(',')
+      .map(prop => prop.trim().toLowerCase()) 
+      .sort(); // sort properties to ensure consistent order
+  };
+
+  // refreshQuestions function
+  const refreshQuestions = async (filters) => {
+    setIsLoading(true);
     try {
-      const updatedQuestionsList = await fetchQuestions();
-      setQuestions(updatedQuestionsList);
+      const allQuestions = await fetchQuestions();
+      let filteredQuestions = allQuestions;
+
+      if (filters) {
+        const { assignedTo, properties } = filters;
+        if (assignedTo) {
+          filteredQuestions = filteredQuestions.filter(q => q['Assigned To'] === filters.assignedTo);
+        }
+        if (properties) {
+          const normalizedFilterProperties = normalizeProperties(properties);
+          filteredQuestions = filteredQuestions.filter(q => {
+            const normalizedQuestionProperties = normalizeProperties(q.Properties || '');
+            return normalizedFilterProperties.every(filterProp => normalizedQuestionProperties.includes(filterProp));
+          });
+        }
+      }
+      setQuestions(filteredQuestions);
     } catch (error) {
       console.error('Failed to refresh questions:', error);
-    }
+    } finally {
+      setIsLoading(false);
+    };
   };
 
 
@@ -130,12 +162,18 @@ function App() {
   return (
     <div className="App">
       <TopBar />
+      <FilterModal
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+        onApplyFilter={handleApplyFilter}
+      />
       <CreateQuestionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <CreateQuestionForm onSubmit={handleCreateQuestion} />
       </CreateQuestionModal>
       <NavBar 
         onSearch={handleSearch} 
         onClickCreate={() => setIsModalOpen(true)}
+        onOpenFilterModal={() => setIsFilterModalOpen(true)}
       />
       <QuestionsHeader 
         handleSelectAll={handleSelectAll}

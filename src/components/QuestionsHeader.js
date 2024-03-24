@@ -1,44 +1,34 @@
 import React from 'react';
+import { TrashIcon, UserAddIcon } from '@heroicons/react/solid';
 
 function QuestionsHeader({ handleSelectAll, areAllQuestionsSelected, handleClearSelection, handleBulkAssign, selectedQuestionsCount }) {
-  const dynamicButtonStyle =
-    'text-white font-bold py-2 px-4 rounded opacity-90 hover:opacity-100 transition-opacity duration-300';
-  
-    return (
-      <div className="bg-blue-600 text-white p-3 flex justify-between items-center">
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="selectAll"
-            className="mr-2"
-            onChange={handleSelectAll}
-            checked={areAllQuestionsSelected}
-          />
-          <label htmlFor="selectAll" className="mr-4">Select All</label>
-  
-          {/* Conditionally render Clear and Assign To buttons */}
-          {selectedQuestionsCount > 0 && (
-            <>
-              <button
-                onClick={handleClearSelection}
-                className={`${dynamicButtonStyle} bg-blue-300 hover:bg-blue-400 mr-2`}
-              >
-                Clear
-              </button>
-              <button
-                onClick={handleBulkAssign}
-                className={`${dynamicButtonStyle} bg-blue-300 hover:bg-blue-400`}
-              >
-                Assign To
-              </button>
-            </>
-          )}
-        </div>
-      <div className="grid grid-cols-4 gap-4 flex-grow">
-        <div>QUESTION</div>
-        <div>ANSWER</div>
-        <div>CREATED AT</div>
-        <div>CREATED BY</div>
+  return (
+    <div className="bg-gray-100 p-3 flex justify-between items-center shadow-sm">
+      <div className="flex items-center">
+        <input
+          type="checkbox"
+          id="selectAll"
+          className="form-checkbox rounded text-blue-500 focus:ring-0 mr-2"
+          onChange={handleSelectAll}
+          checked={areAllQuestionsSelected}
+        />
+        <label htmlFor="selectAll" className="text-gray-700 font-medium mr-4">Select All</label>
+        {selectedQuestionsCount > 0 && (
+          <>
+            <button
+              onClick={handleClearSelection}
+              className="flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200 mr-2"
+            >
+              <TrashIcon className="h-5 w-5 mr-1" /> Clear
+            </button>
+            <button
+              onClick={handleBulkAssign}
+              className="flex items-center text-gray-600 hover:text-gray-800 transition-colors duration-200"
+            >
+              <UserAddIcon className="h-5 w-5 mr-1" /> Assign To
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

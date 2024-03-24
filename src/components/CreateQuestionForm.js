@@ -29,6 +29,8 @@ const CreateQuestionForm = ({ onSubmit }) => {
     if (!validateEmail(email)) return;
 
     onSubmit({
+        "Company Name": "Test Company Limited",
+        "_companyId": "63297b55665e8a001366a547",
         Question: question,
         Answer: answer, 
         "Question Description": questionDescription,

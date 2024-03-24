@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { SearchIcon, PlusCircleIcon } from '@heroicons/react/outline'; // Using outline icons for a lighter design
-import { AdjustmentsIcon } from '@heroicons/react/solid'; // A more detailed filter icon
+import { SearchIcon, PlusCircleIcon } from '@heroicons/react/outline'; 
+import { AdjustmentsIcon } from '@heroicons/react/solid'; 
 
-function NavBar({ onSearch, onClickCreate, onFilter }) {
+function NavBar({ onSearch, onClickCreate, onOpenFilterModal }) {
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSubmit = (event) => {
@@ -14,7 +14,7 @@ function NavBar({ onSearch, onClickCreate, onFilter }) {
     <div className="flex items-center justify-between px-12 py-8 bg-white shadow">
 
       <div className="border-r border-gray-200 pr-4">
-        <button onClick={onFilter} className="text-gray-500 hover:text-gray-700">
+        <button onClick={onOpenFilterModal} className="text-gray-500 hover:text-gray-700">
           <AdjustmentsIcon className="h-5 w-5" />
         </button>
       </div>

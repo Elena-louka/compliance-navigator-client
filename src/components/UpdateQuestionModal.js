@@ -6,7 +6,8 @@ const UpdateQuestionModal = ({ isOpen, onClose, question, onUpdate }) => {
         answer: '',
         assignedTo: '',
         properties: '',
-        questionDescription: ''
+        questionDescription: '',
+        email: ''
     });
 
     useEffect(() => {
@@ -16,7 +17,8 @@ const UpdateQuestionModal = ({ isOpen, onClose, question, onUpdate }) => {
                 answer: question.Answer || '',
                 assignedTo: question['Assigned To'] || '',
                 properties: question.Properties || '',
-                questionDescription: question['Question Description'] || ''
+                questionDescription: question['Question Description'] || '',
+                email: question['Updated By'] || ''
             });
         }
     }, [question]);
@@ -37,6 +39,7 @@ const UpdateQuestionModal = ({ isOpen, onClose, question, onUpdate }) => {
             'Assigned To': formData.assignedTo,
             Properties: formData.properties,
             'Question Description': formData.questionDescription,
+            "Updated By": formData.email,
         };
         onUpdate(question.id, updatedData);
         onClose();
@@ -67,6 +70,19 @@ const UpdateQuestionModal = ({ isOpen, onClose, question, onUpdate }) => {
                             onChange={handleChange}
                             placeholder="user@example.com" 
                             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Your Email</label>
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="userl@example.com"
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                            required 
                         />
                     </div>
                     <div>
